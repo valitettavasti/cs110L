@@ -1,6 +1,8 @@
 # CS 110L Spring 2020
 
-![Rustt图片](Rust.png)
+<!--![Rustt图片](Rust.png) --> 
+<p align="center"><img src = 'Rust.png' width =600px height =400px></p>
+
 
 初始代码获取位置:(https://reberhardt.com/cs110l/spring-2020/).
 
