@@ -37,4 +37,49 @@ fn main() {
     // println!("random word: {}", secret_word);
 
     // Your code here! :)
+    println!("Welcome to CS110L Hangman!");
+    let mut rust_guess_times = NUM_INCORRECT_GUESSES;
+    let mut output_words :Vec<char>=Vec::new();
+    let mut guessed_words:Vec<char>=Vec::new();
+    for _ in 0..secret_word_chars.len(){
+        output_words.push("-".parse().unwrap());
+    }
+    let mut count_number = 0;
+    while rust_guess_times > 0 {
+        let output_words_string:String = output_words.iter().collect();
+        println!("The word so far is {}",output_words_string);
+        let guessed_words_string:String = guessed_words.iter().collect();
+        println!("You have guessed the following letters:{}",guessed_words_string);
+        println!("You have {} guesses left",rust_guess_times);
+        print!("please guess a letter:");
+        io::stdout()
+            .flush()
+            .expect("Error flushing stdout.");
+        let mut guess = String::new();
+        io::stdin()
+            .read_line(&mut guess)
+            .expect("Failed to read line");
+        let guess_char = guess.chars().next().unwrap();
+        guessed_words.push(guess_char);
+        let mut judge = false;
+        'counting_up:for i in 0..secret_word_chars.len(){
+            if secret_word_chars[i] == guess_char{
+                output_words[i] = guess_char;
+                judge = true;
+                count_number += 1;
+                //break 'counting_up;
+            }
+        }
+        if judge==false {
+            rust_guess_times-=1;
+        }
+        if count_number==secret_word_chars.len(){
+            break;
+        }
+    }
+    if count_number==secret_word_chars.len(){
+        println!("Congratulations you guessed the secret word:{}!",secret_word);
+    }else {
+        println!("Sorry, you ran out of guesses!");
+    }
 }
