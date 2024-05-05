@@ -6,7 +6,7 @@
 
 初始代码获取位置:
 
-(https://reberhardt.com/cs110l/spring-2020/).
+https://github.com/reberhardt7/cs110l-spr-2020-starter-code
 
 课程网站:
 
