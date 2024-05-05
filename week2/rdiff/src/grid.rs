@@ -40,7 +40,6 @@ impl Grid {
 
     /// Sets the element at the specified location to the specified value. If the location is out
     /// of bounds, returns Err with an error message.
-    #[allow(unused)] // TODO: delete this line when you implement this function
     pub fn set(&mut self, row: usize, col: usize, val: usize) -> Result<(), &'static str> {
         if row <= self.num_rows && col <= self.num_cols {
             self.elems[row * self.num_cols + col] = val;
