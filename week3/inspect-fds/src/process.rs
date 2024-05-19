@@ -22,8 +22,18 @@ impl Process {
     /// descriptor table.)
     #[allow(unused)] // TODO: delete this line for Milestone 3
     pub fn list_fds(&self) -> Option<Vec<usize>> {
-        // TODO: implement for Milestone 3
-        unimplemented!();
+        let path = format!("/proc/{}/fd",self.pid);
+        let mut vec_file :Vec<usize>= Vec::new();
+        let dir = fs::read_dir(path).ok()?;
+        for file in dir  {
+            let filename = file.ok()?.file_name();   //文件名称,为一个OSString
+            vec_file.push(filename.into_string().ok()?.parse::<usize>().ok()?);
+        }
+        if (vec_file.is_empty()) {
+            None
+        } else {
+            Some(vec_file)
+        }
     }
 
     /// This function returns a list of (fdnumber, OpenFile) tuples, if file descriptor
@@ -36,6 +46,28 @@ impl Process {
             open_files.push((fd, OpenFile::from_fd(self.pid, fd)?));
         }
         Some(open_files)
+    }
+    pub fn print(&self) {
+        println!("========== \"{}\" (pid {}, ppid {}) ==========",self.command,self.pid,self.ppid);
+        match self.list_open_files() {
+            None => println!(
+                "Warning: could not inspect file descriptors for this process! \
+                    It might have exited just as we were about to look at its fd table, \
+                    or it might have exited as a while ago and is waiting for the parent \
+                    to reap it."
+            ),
+            Some(open_files) => {
+                for (fd,file) in open_files {
+                    println!(
+                        "{:<4}{:<15} cursor: {:<4}{}",
+                        fd,
+                        format!("({})", file.access_mode),
+                        file.cursor,
+                        file.colorized_name(),
+                    );
+                }
+            }
+        }
     }
 }
 
